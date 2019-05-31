@@ -1,0 +1,11 @@
+#!/bin/bash
+ORDER_ID=$1
+
+/system/bin/mariadb/bin/mysql --defaults-file=/system/bin/mariadb/my-medium.cnf -X -uroot -p'ipos' -e "use shop;select * from orders where id='$ORDER_ID';" > /sdcard/fix/orders.xml
+/system/bin/mariadb/bin/mysql --defaults-file=/system/bin/mariadb/my-medium.cnf -X -uroot -p'ipos' -e "use shop;select * from one_order where order_id='$ORDER_ID';" > /sdcard/fix/one_order.xml
+/system/bin/mariadb/bin/mysql --defaults-file=/system/bin/mariadb/my-medium.cnf -X -uroot -p'ipos' -e "use shop;select * from order_item where one_order_id in (select id from one_order where order_id='$ORDER_ID');" > /sdcard/fix/order_item.xml
+/system/bin/mariadb/bin/mysql --defaults-file=/system/bin/mariadb/my-medium.cnf -X -uroot -p'ipos' -e "use shop;select * from order_payment where one_order_id in (select id from one_order where order_id='$ORDER_ID');" > /sdcard/fix/order_payment.xml
+/system/bin/mariadb/bin/mysql --defaults-file=/system/bin/mariadb/my-medium.cnf -X -uroot -p'ipos' -e "use shop;select * from payment where id in (select payment_id from order_payment where one_order_id in (select id from one_order where order_id='$ORDER_ID'));" > /sdcard/fix/payment.xml
+/system/bin/mariadb/bin/mysql --defaults-file=/system/bin/mariadb/my-medium.cnf -X -uroot -p'ipos' -e "use shop;select * from order_delivery where orders_id='$ORDER_ID';" > /sdcard/fix/order_delivery.xml
+/system/bin/mariadb/bin/mysql --defaults-file=/system/bin/mariadb/my-medium.cnf -X -uroot -p'ipos' -e "use shop;select * from order_delivery_process where order_delivery_id=(select id from order_delivery where orders_id='$ORDER_ID');" > /sdcard/fix/order_delivery_process.xml
+/system/bin/mariadb/bin/mysql --defaults-file=/system/bin/mariadb/my-medium.cnf -X -uroot -p'ipos' -e "use shop;select * from staff_performance where object_Id in ('$ORDER_ID') or object_Id in (select id from order_item where one_order_Id in (select id from one_order where order_id='$ORDER_ID')) or object_Id in (select id from one_order where order_id='$ORDER_ID') or object_Id in (select payment_id from order_payment where one_order_id in (select id from one_order where order_id='$ORDER_ID'));" > /sdcard/fix/staff_performance.xml

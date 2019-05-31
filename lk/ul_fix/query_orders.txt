@@ -1,0 +1,18 @@
+order:  5bOX5unCS8JCoJMG
+
+
+select * from orders where id='5bOX5unCS8JCoJMG';
+select 'one_order---------------------' from orders limit 1;
+select * from one_order where order_id='5bOX5unCS8JCoJMG';
+select 'order_item---------------------' from orders limit 1;
+select * from order_item where one_order_id in (select id from one_order where order_id='5bOX5unCS8JCoJMG');
+select 'order_payment---------------------' from orders limit 1;
+select * from order_payment where one_order_id in (select id from one_order where order_id='5bOX5unCS8JCoJMG');
+select 'payment---------------------' from orders limit 1;
+select * from payment where id in (select payment_id from order_payment where one_order_id in (select id from one_order where order_id='5bOX5unCS8JCoJMG'));
+select 'order_delivery---------------------' from orders limit 1;
+select * from order_delivery where orders_id='5bOX5unCS8JCoJMG';
+select 'order_delivery_process---------------------' from orders limit 1;
+select * from order_delivery_process where order_delivery_id=(select id from order_delivery where orders_id='5bOX5unCS8JCoJMG');
+select 'staff_performance---------------------' from orders limit 1;
+select * from staff_performance where object_Id in ('5bOX5unCS8JCoJMG') or object_Id in (select id from order_item where one_order_Id in (select id from one_order where order_id='5bOX5unCS8JCoJMG')) or object_Id in (select id from one_order where order_id='5bOX5unCS8JCoJMG') or object_Id in (select payment_id from order_payment where one_order_id in (select id from one_order where order_id='5bOX5unCS8JCoJMG'));

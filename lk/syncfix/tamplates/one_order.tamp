@@ -1,0 +1,15 @@
+one_order
+    id=%(id)s
+    shop_id=%(shop_id)s
+    order_id=%(order_id)s
+    total=%(total)s.5
+    receivable=%(receivable)s
+    create_time=%(create_time)s
+    order_src=%(order_src)s
+    client_id=%(client_id)s
+    pos_owner_id=%(pos_owner_id)s
+    pos_owner_name=%(pos_owner_name)s
+    remark=%(remark)s
+    data=%(data)s
+    status=%(status)s
+    order_sub_src=%(order_sub_src)s
